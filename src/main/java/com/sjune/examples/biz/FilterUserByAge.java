@@ -1,8 +1,9 @@
-package com.sjune.examples.function;
+package com.sjune.examples.biz;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.sjune.examples.CodeStyle;
 import com.sjune.examples.domain.User;
 
 import java.util.List;
@@ -11,20 +12,20 @@ import java.util.stream.Collectors;
 import static ch.lambdaj.Lambda.*;
 import static org.hamcrest.Matchers.greaterThan;
 
-public class FilteringUser implements CodeStyle {
+public class FilterUserByAge implements CodeStyle {
     private List<User> users;
-    private int filteringAge;
+    private int minAge;
 
-    public FilteringUser(List<User> users, int filteringAge) {
+    public FilterUserByAge(List<User> users, int minAge) {
         this.users = users;
-        this.filteringAge = filteringAge;
+        this.minAge = minAge;
     }
 
     @Override
     public List<User> byJava() {
         List<User> results = Lists.newArrayList();
         for (User user : users) {
-            if (user.getAge() > filteringAge) {
+            if (user.getAge() > minAge) {
                 results.add(user);
             }
         }
@@ -36,18 +37,18 @@ public class FilteringUser implements CodeStyle {
         return Lists.newArrayList(Iterables.filter(users, new Predicate<User>() {
             @Override
             public boolean apply(User input) {
-                return input.getAge() > filteringAge;
+                return input.getAge() > minAge;
             }
         }));
     }
 
     @Override
     public List<User> byLambdaj() {
-        return filter(having(on(User.class).getAge(), greaterThan(30)), users);
+        return filter(having(on(User.class).getAge(), greaterThan(minAge)), users);
     }
 
     @Override
     public List<User> byJava8() {
-        return users.stream().filter(member -> member.getAge() > filteringAge).collect(Collectors.toList());
+        return users.stream().filter(member -> member.getAge() > minAge).collect(Collectors.toList());
     }
 }

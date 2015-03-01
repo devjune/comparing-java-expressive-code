@@ -1,4 +1,4 @@
-package com.sjune.examples.function;
+package com.sjune.examples;
 
 import java.util.List;
 
